@@ -6,6 +6,9 @@
     <meta name="description" content="La Brostería - El pollo broster más crujiente y sabroso de la ciudad. Combos mundialistas, hamburguesas, salchipapas, alitas y más. ¡Haz tu pedido por WhatsApp!">
     <title>La Brostería - Sabor Crujiente Premium 🍗</title>
     
+    <!-- Favicon (Icono de pestaña del navegador) -->
+    <link rel="icon" type="image/png" href="logo.png">
+    
     <!-- Google Fonts para tipografía premium -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -472,7 +475,7 @@
             background: rgba(18, 18, 20, 0.5);
             border-top: 1px solid var(--glass-border);
             border-bottom: 1px solid var(--glass-border);
-            padding: 20px 0;
+            padding: 10px 0;
             position: sticky;
             top: 76px; /* navbar height */
             z-index: 98;
@@ -482,65 +485,16 @@
         }
 
         .menu-nav-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            display: block;
         }
 
-        /* Search Bar */
-        .search-container {
-            position: relative;
-            width: 100%;
-            max-width: 450px;
-            margin: 0 auto;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 12px 20px;
-            padding-left: 45px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            border-radius: 50px;
-            color: var(--text-light);
-            font-size: 0.95rem;
-            outline: none;
-            transition: var(--transition);
-        }
-
-        .search-input:focus {
-            border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: var(--shadow-glow);
-        }
-
-        .search-container i {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        .search-input:focus + i {
-            color: var(--primary);
-        }
-
-        /* Horizontal Scrollable Category Chips (Temu Style) */
+        /* Row of Category Chips (Fully Visible, No Sliding) */
         .categories-container {
-            overflow-x: auto;
-            white-space: nowrap;
-            padding: 5px 0;
             display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 10px;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none; /* Firefox */
-        }
-
-        .categories-container::-webkit-scrollbar {
-            display: none; /* Chrome/Safari */
+            padding: 5px 0;
         }
 
         .chip {
@@ -2081,6 +2035,19 @@
             .cart-fab-total { font-size: 1.1rem; padding: 4px 10px; }
             .cart-fab-text { display: none; }
             .stepper { padding: 15px 15px; }
+            .categories-container {
+                gap: 6px;
+                justify-content: center;
+            }
+            .chip {
+                padding: 6px 12px;
+                font-size: 0.72rem;
+                gap: 4px;
+                border-radius: 30px;
+            }
+            .chip i {
+                font-size: 0.85rem;
+            }
             .map-container { min-height: 280px; }
         }
     </style>
@@ -2090,13 +2057,13 @@
     <!-- 1. PROMO TICKER -->
     <div class="promo-ticker">
         <div class="ticker-wrapper">
-            <span class="ticker-item"><i class="fa-solid fa-fire"></i> ¡EL MEJOR BROSTER DE CARABAYLLO!</span>
+            <span class="ticker-item"><i class="fa-solid fa-fire"></i> ¡EL MEJOR BROSTER DE SURQUILLO!</span>
             <span class="ticker-item"><i class="fa-solid fa-truck"></i> DELIVERY DISPONIBLE AL 960373555</span>
             <span class="ticker-item"><i class="fa-solid fa-percent"></i> COMBOS MUNDIALISTAS DESDE S/. 15.00</span>
             <span class="ticker-item"><i class="fa-solid fa-clock"></i> ATENDEMOS DE 5:00 PM A 11:00 PM</span>
             <span class="ticker-item"><i class="fa-solid fa-fire"></i> SALSAS Y CREMAS ARTESANALES GRATIS</span>
             <!-- Duplicado para loop infinito fluido -->
-            <span class="ticker-item"><i class="fa-solid fa-fire"></i> ¡EL MEJOR BROSTER DE CARABAYLLO!</span>
+            <span class="ticker-item"><i class="fa-solid fa-fire"></i> ¡EL MEJOR BROSTER DE SURQUILLO!</span>
             <span class="ticker-item"><i class="fa-solid fa-truck"></i> DELIVERY DISPONIBLE AL 960373555</span>
             <span class="ticker-item"><i class="fa-solid fa-percent"></i> COMBOS MUNDIALISTAS DESDE S/. 15.00</span>
             <span class="ticker-item"><i class="fa-solid fa-clock"></i> ATENDEMOS DE 5:00 PM A 11:00 PM</span>
@@ -2148,14 +2115,9 @@
         </div>
     </header>
 
-    <!-- 4. TEMU BAR: SEARCH & CATEGORIES -->
+    <!-- 4. CATEGORIES BAR (STICKY) -->
     <section class="menu-nav-section" id="menu-seccion">
         <div class="container menu-nav-wrapper">
-            <div class="search-container">
-                <input type="text" id="search-input" class="search-input" placeholder="¿Qué se te antoja hoy? Ej. Combo Pecho...">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-            
             <div class="categories-container" id="categories-container">
                 <!-- Chips generados dinámicamente -->
             </div>
@@ -2263,7 +2225,7 @@
                         <div class="reviewer-avatar">MS</div>
                         <div class="reviewer-info">
                             <h4>Milagros Sánchez</h4>
-                            <span>Vecina de Carabayllo</span>
+                            <span>Vecina de Surquillo</span>
                         </div>
                     </div>
                 </div>
@@ -2303,7 +2265,7 @@
                         <div class="contact-icon"><i class="fa-solid fa-map-location-dot"></i></div>
                         <div class="contact-text">
                             <h4>Nuestra Dirección</h4>
-                            <p>Carabayllo, Lima, Perú (Cerca al paradero principal)</p>
+                            <p>Surquillo, Lima, Perú (Cerca al Mercado de Surquillo)</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -2335,7 +2297,7 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <h3>LA <span>BROSTERÍA</span></h3>
-                    <p>El sabor crujiente que Carabayllo prefiere. Preparamos con amor, higiene y insumos de primera calidad para ti y tu familia.</p>
+                    <p>El sabor crujiente que Surquillo prefiere. Preparamos con amor, higiene e insumos de primera calidad para ti y tu familia.</p>
                     <div class="social-links">
                         <a href="https://facebook.com" target="_blank" class="social-btn"><i class="fa-brands fa-facebook-f"></i></a>
                         <a href="https://instagram.com" target="_blank" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
@@ -2370,9 +2332,6 @@
             
             <div class="footer-bottom">
                 <p>&copy; 2026 La Brostería. Todos los derechos reservados.</p>
-                <div class="developer-credit">
-                    Diseñado con ❤️ por <a href="#" target="_blank">Josue Espinoza</a>
-                </div>
             </div>
         </div>
     </footer>
@@ -2394,136 +2353,84 @@
                 <span class="cart-fab-total" id="cart-fab-total">S/. 0.00</span>
                 <span class="cart-fab-btn-label">Ver Pedido <i class="fa-solid fa-arrow-right"></i></span>
             </div>
-        </div>
-    </div>
-
-    <!-- 12. BOTTOM SHEET MODAL (Carrito, Formulario, Checkout) -->
+    <!-- 12. BOTTOM SHEET MODAL (Carrito, Checkout) -->
     <div class="modal-overlay" id="cart-modal-overlay" onclick="closeCartModal(event)">
         <div class="bottom-sheet" id="bottom-sheet">
             <!-- Header -->
             <div class="sheet-header">
                 <div class="sheet-title">
                     <i class="fa-solid fa-basket-shopping"></i>
-                    <h3 id="modal-title-text">Bolsa de Pedidos</h3>
+                    <h3 id="modal-title-text">Tu Pedido</h3>
                 </div>
                 <button class="sheet-close" onclick="closeCartModal(event, true)">&times;</button>
-            </div>
-
-            <!-- Stepper -->
-            <div class="stepper">
-                <div class="step active" id="step-1-indicator">
-                    <div class="step-circle">1</div>
-                    <span class="step-label">Pedido</span>
-                </div>
-                <div class="step" id="step-2-indicator">
-                    <div class="step-circle">2</div>
-                    <span class="step-label">Datos & Pago</span>
-                </div>
             </div>
 
             <!-- Body Scroll Area -->
             <div class="sheet-body" id="sheet-body">
                 
-                <!-- SECCIÓN 1: LISTADO DE PRODUCTOS DEL CARRITO -->
-                <div id="step-1-content">
-                    <div class="cart-list" id="cart-list">
-                        <!-- Lista dinámica del carrito -->
-                    </div>
-                    
-                    <div class="summary-box" id="summary-box">
-                        <div class="summary-row">
-                            <span>Subtotal</span>
-                            <span id="subtotal-val">S/. 0.00</span>
+                <!-- LISTADO DE PRODUCTOS DEL CARRITO -->
+                <div class="cart-list" id="cart-list">
+                    <!-- Lista dinámica del carrito -->
+                </div>
+
+                <!-- Selección de Cremas -->
+                <div id="creams-selector-box" class="form-group" style="margin-top: 20px; border-top: 1px dashed var(--glass-border); padding-top: 20px;">
+                    <label style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);">Cremas Preferidas (Gratis)</label>
+                    <div class="creams-grid" style="margin-top: 10px;">
+                        <div class="cream-checkbox">
+                            <input type="checkbox" id="cream-mayo" name="creams" value="Mayonesa" checked>
+                            <label for="cream-mayo" class="cream-label"><i class="fa-solid fa-check"></i> Mayonesa</label>
                         </div>
-                        <div class="summary-row">
-                            <span>Costo de Envío</span>
-                            <span id="delivery-cost-val">S/. 0.00</span>
+                        <div class="cream-checkbox">
+                            <input type="checkbox" id="cream-ketchup" name="creams" value="Ketchup" checked>
+                            <label for="cream-ketchup" class="cream-label"><i class="fa-solid fa-check"></i> Ketchup</label>
                         </div>
-                        <div class="summary-row total">
-                            <span>Total a Pagar</span>
-                            <span id="total-val">S/. 0.00</span>
+                        <div class="cream-checkbox">
+                            <input type="checkbox" id="cream-aji" name="creams" value="Ají de la Casa" checked>
+                            <label for="cream-aji" class="cream-label"><i class="fa-solid fa-check"></i> Ají</label>
+                        </div>
+                        <div class="cream-checkbox">
+                            <input type="checkbox" id="cream-mostaza" name="creams" value="Mostaza">
+                            <label for="cream-mostaza" class="cream-label"><i class="fa-solid fa-check"></i> Mostaza</label>
+                        </div>
+                        <div class="cream-checkbox">
+                            <input type="checkbox" id="cream-tartara" name="creams" value="Tártara Premium">
+                            <label for="cream-tartara" class="cream-label"><i class="fa-solid fa-check"></i> Tártara</label>
+                        </div>
+                        <div class="cream-checkbox">
+                            <input type="checkbox" id="cream-golf" name="creams" value="Salsa Golf">
+                            <label for="cream-golf" class="cream-label"><i class="fa-solid fa-check"></i> Salsa Golf</label>
                         </div>
                     </div>
                 </div>
-
-                <!-- SECCIÓN 2: FORMULARIO DE CLIENTE Y DETALLES DE PAGO -->
-                <div id="step-2-content" class="hidden">
-                    <form id="order-form" onsubmit="handleFormSubmit(event)">
-                        
-                        <div class="form-group">
-                            <label for="client-name">Nombre Completo</label>
-                            <input type="text" id="client-name" class="form-control" placeholder="Ej. Juan Pérez" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Método de Entrega</label>
-                            <div class="form-tabs">
-                                <div class="form-tab active" id="tab-delivery" onclick="setDeliveryMethod('delivery')">Delivery a Casa</div>
-                                <div class="form-tab" id="tab-pickup" onclick="setDeliveryMethod('pickup')">Recojo en Local</div>
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="address-group">
-                            <label for="client-address">Dirección de Entrega</label>
-                            <input type="text" id="client-address" class="form-control" placeholder="Ej. Av. Universitaria 1234, Carabayllo" required>
-                            <input type="text" id="client-ref" class="form-control" placeholder="Referencias (Ej. Frente a parque, fachada verde)" style="margin-top: 8px;">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Cremas Preferidas (Gratis)</label>
-                            <div class="creams-grid">
-                                <div class="cream-checkbox">
-                                    <input type="checkbox" id="cream-mayo" name="creams" value="Mayonesa" checked>
-                                    <label for="cream-mayo" class="cream-label"><i class="fa-solid fa-check"></i> Mayo</label>
-                                </div>
-                                <div class="cream-checkbox">
-                                    <input type="checkbox" id="cream-ketchup" name="creams" value="Ketchup" checked>
-                                    <label for="cream-ketchup" class="cream-label"><i class="fa-solid fa-check"></i> Ketchup</label>
-                                </div>
-                                <div class="cream-checkbox">
-                                    <input type="checkbox" id="cream-aji" name="creams" value="Ají de la Casa" checked>
-                                    <label for="cream-aji" class="cream-label"><i class="fa-solid fa-check"></i> Ají</label>
-                                </div>
-                                <div class="cream-checkbox">
-                                    <input type="checkbox" id="cream-mostaza" name="creams" value="Mostaza">
-                                    <label for="cream-mostaza" class="cream-label"><i class="fa-solid fa-check"></i> Mostaza</label>
-                                </div>
-                                <div class="cream-checkbox">
-                                    <input type="checkbox" id="cream-tartara" name="creams" value="Tártara Premium">
-                                    <label for="cream-tartara" class="cream-label"><i class="fa-solid fa-check"></i> Tártara</label>
-                                </div>
-                                <div class="cream-checkbox">
-                                    <input type="checkbox" id="cream-golf" name="creams" value="Salsa Golf">
-                                    <label for="cream-golf" class="cream-label"><i class="fa-solid fa-check"></i> Golf</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="payment-method">Forma de Pago</label>
-                            <select id="payment-method" class="form-control" onchange="handlePaymentChange()" required>
-                                <option value="Yape" selected>Yape (QR / Celular)</option>
-                                <option value="Plin">Plin (QR / Celular)</option>
-                                <option value="Efectivo">Efectivo (Paga al recibir)</option>
-                            </select>
-                            
-                            <div class="qr-box" id="qr-payment-box">
-                                <p>Realiza tu Yape al número del titular:</p>
-                                <div class="qr-highlight">960 373 555</div>
-                                <div class="qr-sub">Titular: Josue Espinoza</div>
-                                <p style="margin-top: 10px; font-size: 0.75rem; color: var(--secondary)">
-                                    * Deberás enviar la captura del yapeo por WhatsApp al culminar el pedido.
-                                </p>
-                            </div>
-                        </div>
-                    </form>
+                
+                <div class="summary-box" id="summary-box" style="margin-top: 20px;">
+                    <div class="summary-row total">
+                        <span>Total del Pedido</span>
+                        <span id="total-val">S/. 0.00</span>
+                    </div>
                 </div>
 
             </div>
 
             <!-- Footer Buttons -->
             <div class="sheet-footer" id="sheet-footer">
-                <!-- Se inyectan dinámicamente según el paso -->
+                <!-- Se inyectan dinámicamente -->
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Detalle de Producto -->
+    <div class="modal-overlay" id="product-detail-overlay" onclick="closeProductDetailModal(event)">
+        <div class="bottom-sheet" id="product-detail-sheet" style="max-height: 85vh;">
+            <div class="sheet-header">
+                <div class="sheet-title">
+                    <i class="fa-solid fa-circle-info" style="color: var(--primary);"></i>
+                    <h3>Detalle de Producto</h3>
+                </div>
+                <button class="sheet-close" onclick="closeProductDetailModal(event, true)">&times;</button>
+            </div>
+            <div class="sheet-body" id="product-detail-body" style="padding: 20px 25px 30px 25px; text-align: center; display: flex; flex-direction: column; gap: 15px;">
+                <!-- Inyectado dinámicamente -->
             </div>
         </div>
     </div>
@@ -2540,6 +2447,34 @@
            DATA: PRODUCT DATABASE (MENU_DB)
            ========================================== */
         const MENU_DB = [
+            // 0. PROMOCIONES EXCLUSIVAS
+            {
+                id: 'promo-duo',
+                name: 'Promo Dúo Crujiente 🏷️',
+                price: 22.00,
+                desc: '1/4 de Pollo Broster Pecho + 1 Salchipapa Personal + 2 Vasos de Chicha Morada Helada.',
+                category: 'promos',
+                badge: 'Promo Ahorro',
+                image: 'combo_pecho.png'
+            },
+            {
+                id: 'promo-balde',
+                name: 'Mega Balde Brosterero 🍗🏷️',
+                price: 69.00,
+                desc: '10 Piezas crujientes de Broster + Papas fritas gigantes + Ensalada familiar + Gaseosa 1.5L + Cremas.',
+                category: 'promos',
+                badge: 'Balde Promo',
+                image: 'combo_familiar.png'
+            },
+            {
+                id: 'promo-burger-lover',
+                name: 'Promo Burger Lover 🍔🏷️',
+                price: 25.00,
+                desc: '2 Hamburguesas Broster + Porción de Papas Fritas Mediana + 2 Gaseosas Personales.',
+                category: 'promos',
+                badge: '2x1 Burgers',
+                image: 'hamburguesa.png'
+            },
             // 1. COMBOS MUNDIALISTAS
             {
                 id: 'combo-hincha',
@@ -2800,6 +2735,7 @@
 
         const CATEGORIES = [
             { id: 'all', name: 'Todos', icon: 'fa-solid fa-list' },
+            { id: 'promos', name: 'Promos % 🏷️', icon: 'fa-solid fa-tag' },
             { id: 'combos', name: 'Combos 🏆', icon: 'fa-solid fa-trophy' },
             { id: 'clasicos', name: 'Clásicos 🍗', icon: 'fa-solid fa-drumstick-bite' },
             { id: 'salchipapas', name: 'Salchispapas 🍟', icon: 'fa-solid fa-fire' },
@@ -2818,7 +2754,7 @@
             searchQuery: '',
             deliveryMethod: 'delivery', // 'delivery' o 'pickup'
             currentStep: 1, // 1: Pedido, 2: Formulario/Pago
-            deliveryCost: 5.00 // Costo fijo de delivery en Carabayllo
+            deliveryCost: 5.00 // Costo fijo de delivery en Surquillo
         };
 
         const WHATSAPP_NUMBER = "51960373555";
@@ -2851,12 +2787,6 @@
             renderProducts();
             updateCartFab();
             initIntersectionObserver();
-
-            // Input search event
-            document.getElementById('search-input').addEventListener('input', (e) => {
-                state.searchQuery = e.target.value.toLowerCase().trim();
-                renderProducts();
-            });
 
             // Timer para chequear estado del local cada minuto
             setInterval(checkStoreStatus, 60000);
@@ -2964,7 +2894,7 @@
                 const quantity = cartItem ? cartItem.qty : 0;
                 
                 return `
-                    <div class="product-card reveal" data-product-id="${product.id}">
+                    <div class="product-card reveal" data-product-id="${product.id}" onclick="openProductDetail('${product.id}')">
                         ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
                         <div class="product-image-container">
                             <img src="${product.image}" alt="${product.name}" onerror="this.src='https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=400&q=80'">
@@ -2976,14 +2906,14 @@
                                 <span class="product-price">S/. ${product.price.toFixed(2)}</span>
                                 
                                 ${quantity > 0 ? `
-                                    <div class="cart-control">
+                                    <div class="cart-control" onclick="event.stopPropagation();">
                                         <button class="btn-qty" onclick="updateQty('${product.id}', -1)" aria-label="Disminuir"><i class="fa-solid fa-minus"></i></button>
                                         <span class="qty-num">${quantity}</span>
                                         <button class="btn-qty" onclick="updateQty('${product.id}', 1)" aria-label="Aumentar"><i class="fa-solid fa-plus"></i></button>
                                     </div>
                                 ` : `
-                                    <button class="btn-add-cart" onclick="addToCart('${product.id}')" aria-label="Agregar al carrito">
-                                        <i class="fa-solid fa-cart-plus"></i>
+                                    <button class="btn-add-cart" onclick="event.stopPropagation(); addToCart('${product.id}')" aria-label="Agregar al carrito">
+                                        <i class="fa-solid fa-plus"></i> <span>Añadir</span>
                                     </button>
                                 `}
                             </div>
@@ -3108,27 +3038,23 @@
             const overlay = document.getElementById('cart-modal-overlay');
             overlay.classList.add('open');
             document.body.style.overflow = 'hidden'; // Evita scroll de fondo
-            
-            state.currentStep = 1;
-            updateStepUI();
             renderCartList();
         }
 
         // Close Cart Modal Sheet
         function closeCartModal(event, forceClose = false) {
-            // Cerrar solo si hace click en el fondo (overlay) o en la X (forceClose)
             if (forceClose || event.target === document.getElementById('cart-modal-overlay')) {
                 const overlay = document.getElementById('cart-modal-overlay');
                 overlay.classList.remove('open');
-                document.body.style.overflow = '';
+                if (!document.getElementById('product-detail-overlay').classList.contains('open')) {
+                    document.body.style.overflow = '';
+                }
             }
         }
 
-        // Render Cart List in Modal (Step 1)
+        // Render Cart List in Modal
         function renderCartList() {
             const container = document.getElementById('cart-list');
-            const subtotalSpan = document.getElementById('subtotal-val');
-            const deliverySpan = document.getElementById('delivery-cost-val');
             const totalSpan = document.getElementById('total-val');
             
             if (state.cart.length === 0) {
@@ -3140,20 +3066,26 @@
                     </div>
                 `;
                 document.getElementById('summary-box').classList.add('hidden');
+                document.getElementById('creams-selector-box').classList.add('hidden');
                 renderSheetFooter([]);
                 return;
             }
 
             document.getElementById('summary-box').classList.remove('hidden');
+            document.getElementById('creams-selector-box').classList.remove('hidden');
             
             // Inyectar items
             container.innerHTML = state.cart.map(item => {
                 const subtotal = item.price * item.qty;
+                // Buscar descripción en la base de datos para mostrarla en el carrito
+                const product = MENU_DB.find(p => p.id === item.id);
+                const descText = product ? product.desc : '';
                 return `
                     <div class="cart-item">
                         <div class="cart-item-info">
-                            <div class="cart-item-name">${item.name}</div>
-                            <div class="cart-item-price">S/. ${item.price.toFixed(2)} c/u</div>
+                            <div class="cart-item-name" style="cursor: pointer; color: var(--primary-light); text-decoration: underline;" onclick="closeCartModal(null, true); openProductDetail('${item.id}')">${item.name}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 3px; line-height: 1.2;">${descText}</div>
+                            <div class="cart-item-price" style="margin-top: 5px;">S/. ${item.price.toFixed(2)} c/u</div>
                         </div>
                         <div class="cart-item-actions">
                             <div class="cart-item-qty-control">
@@ -3170,16 +3102,11 @@
 
             // Calcular totales
             const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            const delivery = state.deliveryMethod === 'delivery' ? state.deliveryCost : 0;
-            const total = subtotal + delivery;
-
-            subtotalSpan.innerText = `S/. ${subtotal.toFixed(2)}`;
-            deliverySpan.innerText = delivery === 0 ? '¡Gratis!' : `S/. ${delivery.toFixed(2)}`;
-            totalSpan.innerText = `S/. ${total.toFixed(2)}`;
+            totalSpan.innerText = `S/. ${subtotal.toFixed(2)}`;
 
             renderSheetFooter([
                 { text: 'Seguir Comprando', class: 'btn-secondary', action: 'closeCartModal(null, true)' },
-                { text: 'Siguiente Paso', class: 'btn-primary', action: 'goToStep(2)' }
+                { text: 'Enviar Pedido por WhatsApp 🚀', class: 'btn-primary', action: 'handleFormSubmit(event)' }
             ]);
         }
 
@@ -3191,189 +3118,82 @@
             `).join('');
         }
 
-        // Stepper Navigation
-        function goToStep(stepNum) {
-            if (stepNum === 2 && state.cart.length === 0) {
-                showToast("Tu carrito está vacío", "error");
-                return;
-            }
+        // Product Detail Modal Logic
+        function openProductDetail(productId) {
+            const product = MENU_DB.find(p => p.id === productId);
+            if (!product) return;
 
-            state.currentStep = stepNum;
-            updateStepUI();
+            const body = document.getElementById('product-detail-body');
+            const cartItem = state.cart.find(item => item.id === product.id);
+            const quantity = cartItem ? cartItem.qty : 0;
 
-            const body = document.getElementById('sheet-body');
-            body.scrollTop = 0; // Scroll al inicio
-        }
-
-        // Update active classes and layout according to active step
-        function updateStepUI() {
-            const step1Ind = document.getElementById('step-1-indicator');
-            const step2Ind = document.getElementById('step-2-indicator');
-            const step1Content = document.getElementById('step-1-content');
-            const step2Content = document.getElementById('step-2-content');
-            const titleText = document.getElementById('modal-title-text');
-
-            if (state.currentStep === 1) {
-                step1Ind.className = 'step active';
-                step2Ind.className = 'step';
-                step1Content.classList.remove('hidden');
-                step2Content.classList.add('hidden');
-                titleText.innerText = 'Tu Pedido';
-            } else if (state.currentStep === 2) {
-                step1Ind.className = 'step completed';
-                step2Ind.className = 'step active';
-                step1Content.classList.add('hidden');
-                step2Content.classList.remove('hidden');
-                titleText.innerText = 'Datos de Entrega';
+            body.innerHTML = `
+                <div style="border-radius: var(--radius-lg); overflow: hidden; height: 180px; margin-bottom: 10px; border: 1px solid var(--glass-border);">
+                    <img src="${product.image}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=400&q=80'">
+                </div>
+                <h2 style="font-family: var(--font-brand); font-size: 1.5rem; margin-bottom: 5px; color: var(--text-light);">${product.name}</h2>
+                ${product.badge ? `<div style="margin-bottom: 10px;"><span class="product-badge" style="position: static; display: inline-block; padding: 4px 10px; font-size: 0.7rem;">${product.badge}</span></div>` : ''}
+                <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.4; margin-bottom: 15px; text-align: left;">${product.desc}</p>
                 
-                // Render footer buttons for Step 2
-                renderSheetFooter([
-                    { text: '< Atrás', class: 'btn-secondary', action: 'goToStep(1)' },
-                    { text: 'Enviar Pedido 🚀', class: 'btn-primary', action: 'submitOrderForm()' }
-                ]);
+                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 12px 18px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); margin-bottom: 15px;">
+                    <span style="font-size: 0.95rem; font-weight: 700; color: var(--text-muted);">Precio:</span>
+                    <span style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--secondary); font-weight: 700;">S/. ${product.price.toFixed(2)}</span>
+                </div>
+
+                <div style="display: flex; gap: 15px; justify-content: center; align-items: center; width: 100%;">
+                    ${quantity > 0 ? `
+                        <div class="cart-control" style="padding: 4px 12px; gap: 12px; width: 100%; justify-content: center;">
+                            <button class="btn-qty" style="width: 32px; height: 32px;" onclick="event.stopPropagation(); updateQty('${product.id}', -1); openProductDetail('${product.id}')"><i class="fa-solid fa-minus"></i></button>
+                            <span class="qty-num" style="font-size: 1.1rem;">${quantity}</span>
+                            <button class="btn-qty" style="width: 32px; height: 32px;" onclick="event.stopPropagation(); updateQty('${product.id}', 1); openProductDetail('${product.id}')"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    ` : `
+                        <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="event.stopPropagation(); addToCart('${product.id}'); openProductDetail('${product.id}')">
+                            <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
+                        </button>
+                    `}
+                </div>
+            `;
+
+            const overlay = document.getElementById('product-detail-overlay');
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProductDetailModal(event, forceClose = false) {
+            if (forceClose || event.target === document.getElementById('product-detail-overlay')) {
+                const overlay = document.getElementById('product-detail-overlay');
+                overlay.classList.remove('open');
+                if (!document.getElementById('cart-modal-overlay').classList.contains('open')) {
+                    document.body.style.overflow = '';
+                }
             }
         }
 
-        /* ==========================================
-           FORM & PAYMENT METHOD LOGIC
-           ========================================== */
-        
-        // Toggle Delivery/Pickup fields
-        function setDeliveryMethod(method) {
-            state.deliveryMethod = method;
-            
-            const tabDelivery = document.getElementById('tab-delivery');
-            const tabPickup = document.getElementById('tab-pickup');
-            const addressGroup = document.getElementById('address-group');
-            const addressInput = document.getElementById('client-address');
-
-            if (method === 'delivery') {
-                tabDelivery.classList.add('active');
-                tabPickup.classList.remove('active');
-                addressGroup.classList.remove('hidden');
-                addressInput.setAttribute('required', 'true');
-            } else {
-                tabDelivery.classList.remove('active');
-                tabPickup.classList.add('active');
-                addressGroup.classList.add('hidden');
-                addressInput.removeAttribute('required');
-            }
-
-            // Recalcular total en el paso 1 si se actualiza el método
-            renderCartList();
-        }
-
-        // Show/hide QR payment details based on selected payment method
-        function handlePaymentChange() {
-            const payMethod = document.getElementById('payment-method').value;
-            const qrBox = document.getElementById('qr-payment-box');
-            const qrText = qrBox.querySelector('p');
-            const qrHighlight = qrBox.querySelector('.qr-highlight');
-
-            if (payMethod === 'Yape') {
-                qrBox.classList.remove('hidden');
-                qrText.innerText = 'Realiza tu Yape al número del titular:';
-                qrHighlight.innerText = '960 373 555';
-            } else if (payMethod === 'Plin') {
-                qrBox.classList.remove('hidden');
-                qrText.innerText = 'Realiza tu Plin al número del titular:';
-                qrHighlight.innerText = '960 373 555';
-            } else {
-                qrBox.classList.add('hidden');
-            }
-        }
-
-        // Programmatic trigger of submit button inside sheet footer
-        function submitOrderForm() {
-            const form = document.getElementById('order-form');
-            if (form.reportValidity()) {
-                form.requestSubmit();
-            } else {
-                // Sacudir modal si falta algún dato requerido
-                const modal = document.getElementById('bottom-sheet');
-                modal.style.animation = 'shake 0.5s ease';
-                setTimeout(() => modal.style.animation = '', 500);
-            }
-        }
-
-        /* ==========================================
-           WHATSAPP API & SUBMIT ORDER
-           ========================================== */
-        
-        // Handle checkout submisson
+        // Handle checkout submisson via WhatsApp Template
         function handleFormSubmit(event) {
-            event.preventDefault();
-
-            const name = document.getElementById('client-name').value;
-            const method = state.deliveryMethod === 'delivery' ? 'Delivery a Domicilio 🛵' : 'Recojo en Local 🛍️';
-            const address = document.getElementById('client-address').value;
-            const ref = document.getElementById('client-ref').value;
-            const payment = document.getElementById('payment-method').value;
+            if (event) event.preventDefault();
 
             // Obtener cremas seleccionadas
             const creamElements = document.querySelectorAll('input[name="creams"]:checked');
             let creams = [];
             creamElements.forEach(el => creams.push(el.value));
-            const creamsText = creams.length > 0 ? creams.join(', ') : 'Sin cremas';
+            const creamsText = creams.length > 0 ? creams.join(', ') : 'Ninguna';
 
             // Armar texto del pedido
-            let orderText = `🍗 *NUEVO PEDIDO - LA BROSTERÍA* 🍗\n\n`;
-            orderText += `👤 *Cliente:* ${name}\n`;
-            orderText += `🛵 *Tipo:* ${method}\n`;
-            
-            if (state.deliveryMethod === 'delivery') {
-                orderText += `📍 *Dirección:* ${address}\n`;
-                if (ref) {
-                    orderText += `🗺️ *Referencia:* ${ref}\n`;
-                }
-            }
-            
-            orderText += `\n🛍️ *Detalle del Pedido:*\n`;
+            let orderText = `*NUEVO PEDIDO - LA BROSTERÍA*\n\n`;
+            orderText += `*Detalle del Pedido:*\n`;
             
             let subtotal = 0;
             state.cart.forEach(item => {
                 const itemSubtotal = item.price * item.qty;
                 subtotal += itemSubtotal;
-                orderText += `• ${item.qty}x ${item.name} (S/. ${itemSubtotal.toFixed(2)})\n`;
+                orderText += `- ${item.qty}x ${item.name} (S/. ${itemSubtotal.toFixed(2)})\n`;
             });
             
-            const deliveryCost = state.deliveryMethod === 'delivery' ? state.deliveryCost : 0;
-            const total = subtotal + deliveryCost;
-
-            if (state.deliveryMethod === 'delivery') {
-                orderText += `➕ *Envío:* S/. ${deliveryCost.toFixed(2)}\n`;
-            }
-            
-            orderText += `\n🌶️ *Cremas:* ${creamsText}\n`;
-            orderText += `💵 *Método de Pago:* ${payment}\n`;
-            orderText += `💰 *TOTAL A PAGAR: S/. ${total.toFixed(2)}*\n\n`;
-            
-            if (payment === 'Yape' || payment === 'Plin') {
-                orderText += `⚠️ *Adjunto captura de pantalla del pago realizado.*`;
-            } else {
-                orderText += `👍 *Pago en efectivo exacto al recibir.*`;
-            }
-
-            // Opcional: Integración con Gmail/Google Sheets vía Apps Script
-            const webhookUrl = ''; // Coloca aquí el URL de tu Apps Script
-            if (webhookUrl) {
-                fetch(webhookUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        timestamp: new Date().toISOString(),
-                        cliente: name,
-                        metodo: method,
-                        direccion: address,
-                        referencia: ref,
-                        pedido: state.cart.map(i => `${i.qty}x ${i.name}`).join(' | '),
-                        cremas: creamsText,
-                        pago: payment,
-                        total: total
-                    })
-                }).catch(err => console.log('Error de webhook:', err));
-            }
+            orderText += `\n*Cremas:* ${creamsText}\n`;
+            orderText += `*TOTAL A PAGAR: S/. ${subtotal.toFixed(2)}*\n\n`;
+            orderText += `*Por favor, confírmenme los datos para coordinar el Delivery / Recojo en Local, mi Dirección exacta y el Método de Pago (Yape, Plin o Efectivo). ¡Muchas gracias!*`;
 
             // Codificar el texto para la URL de WhatsApp
             const encodedText = encodeURIComponent(orderText);
@@ -3389,6 +3209,7 @@
             // Redirigir a WhatsApp
             window.open(whatsappUrl, '_blank');
         }
+
 
         /* ==========================================
            INTERSECTION OBSERVER & TOAST SYSTEM
