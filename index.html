@@ -1338,6 +1338,42 @@
             transform: translateY(0);
         }
 
+        /* Product Detail Image Zoom Modal CSS */
+        .product-detail-image-box {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            width: 100%;
+            height: 220px;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            background: #1e1e24;
+            margin-bottom: 15px;
+        }
+
+        @media (min-width: 480px) {
+            .product-detail-image-box {
+                height: 280px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .product-detail-image-box {
+                height: 340px;
+            }
+            #product-detail-overlay {
+                align-items: center;
+            }
+            #product-detail-sheet {
+                border-radius: var(--radius-lg) !important;
+                transform: translateY(20px) scale(0.95);
+                transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+                max-height: 85vh;
+            }
+            #product-detail-overlay.open #product-detail-sheet {
+                transform: translateY(0) scale(1) !important;
+            }
+        }
+
         /* Bottom Sheet Header */
         .sheet-header {
             padding: 20px 25px;
@@ -1968,6 +2004,30 @@
                 flex-direction: column;
                 text-align: center;
             }
+            .categories-container {
+                display: grid;
+                grid-template-rows: repeat(2, auto);
+                grid-auto-flow: column;
+                overflow-x: auto;
+                justify-content: start;
+                gap: 8px;
+                padding: 4px 15px;
+                scrollbar-width: none;
+                -webkit-overflow-scrolling: touch;
+            }
+            .categories-container::-webkit-scrollbar {
+                display: none;
+            }
+            .chip {
+                white-space: nowrap;
+                padding: 8px 16px;
+                font-size: 0.8rem;
+                gap: 6px;
+                border-radius: 30px;
+            }
+            .chip i {
+                font-size: 0.95rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -2043,7 +2103,6 @@
             .stepper { padding: 15px 15px; }
             .categories-container {
                 gap: 6px;
-                justify-content: center;
             }
             .chip {
                 padding: 6px 12px;
@@ -2080,7 +2139,7 @@
     <!-- 2. STICKY HEADER -->
     <nav class="navbar" id="navbar">
         <div class="container nav-container">
-            <a href="#" class="logo">
+            <a href="#" class="logo" onclick="scrollToTop(event)">
                 <img src="logo.png" alt="La Brostería Logo">
                 <div class="logo-text">
                     <h1>LA BROSTERÍA</h1>
@@ -2089,11 +2148,11 @@
             </a>
             
             <ul class="nav-menu" id="nav-menu">
-                <li><a href="#" class="nav-link" onclick="toggleMenu()">Inicio</a></li>
-                <li><a href="#menu-seccion" class="nav-link" onclick="toggleMenu()">Carta</a></li>
-                <li><a href="#nosotros" class="nav-link" onclick="toggleMenu()">Nosotros</a></li>
-                <li><a href="#testimonios" class="nav-link" onclick="toggleMenu()">Reseñas</a></li>
-                <li><a href="#ubicacion" class="nav-link" onclick="toggleMenu()">Ubicación</a></li>
+                <li><a href="#" class="nav-link" onclick="scrollToTop(event)">Inicio</a></li>
+                <li><a href="#menu-seccion" class="nav-link" onclick="scrollToSection('menu-seccion', event)">Carta</a></li>
+                <li><a href="#nosotros" class="nav-link" onclick="scrollToSection('nosotros', event)">Nosotros</a></li>
+                <li><a href="#testimonios" class="nav-link" onclick="scrollToSection('testimonios', event)">Reseñas</a></li>
+                <li><a href="#ubicacion" class="nav-link" onclick="scrollToSection('ubicacion', event)">Ubicación</a></li>
             </ul>
 
             <div class="nav-right">
@@ -2115,8 +2174,8 @@
             <h2>Sabor crujiente y jugoso <span>que te hace volver.</span></h2>
             <p class="hero-tagline">Elaborado con las mejores piezas de pollo fresco, marinado secreto y fritura a presión dorada perfecta. Acompañado de papas peruanas crocantes y ensalada fresca.</p>
             <div class="hero-ctas">
-                <a href="#menu-seccion" class="btn btn-primary"><i class="fa-solid fa-utensils"></i> Ver la Carta</a>
-                <a href="#ubicacion" class="btn btn-secondary"><i class="fa-solid fa-map-pin"></i> Visítanos</a>
+                <a href="#menu-seccion" class="btn btn-primary" onclick="scrollToSection('menu-seccion', event)"><i class="fa-solid fa-utensils"></i> Ver la Carta</a>
+                <a href="#ubicacion" class="btn btn-secondary" onclick="scrollToSection('ubicacion', event)"><i class="fa-solid fa-map-pin"></i> Visítanos</a>
             </div>
         </div>
     </header>
@@ -2716,13 +2775,13 @@
                 image: 'bebidas.png'
             },
 
-            // 7. EXTRAS
+            // Extras integrados en otras categorías
             {
                 id: 'extra-papas',
                 name: 'Porción Extra de Papas',
                 price: 3.00,
                 desc: 'Adiciona más papas fritas crocantes a tu pedido.',
-                category: 'extras',
+                category: 'salchipapas',
                 badge: null,
                 image: 'salchipapas.png'
             },
@@ -2731,7 +2790,7 @@
                 name: 'Ensalada Extra',
                 price: 2.00,
                 desc: 'Porción individual de ensalada fresca con vinagreta de la casa.',
-                category: 'extras',
+                category: 'clasicos',
                 badge: null,
                 image: 'combo_pecho.png'
             },
@@ -2740,7 +2799,7 @@
                 name: 'Porción de Arroz Blanco',
                 price: 3.00,
                 desc: 'Una porción de arroz blanco graneado para acompañar.',
-                category: 'extras',
+                category: 'clasicos',
                 badge: null,
                 image: 'combo_pecho.png'
             }
@@ -2754,8 +2813,7 @@
             { id: 'salchipapas', name: 'Salchispapas', icon: 'fa-solid fa-fire' },
             { id: 'hamburguesas', name: 'Burgers', icon: 'fa-solid fa-burger' },
             { id: 'alitas', name: 'Alitas', icon: 'fa-solid fa-bone' },
-            { id: 'bebidas', name: 'Bebidas', icon: 'fa-solid fa-wine-glass' },
-            { id: 'extras', name: 'Extras', icon: 'fa-solid fa-plus' }
+            { id: 'bebidas', name: 'Bebidas', icon: 'fa-solid fa-wine-glass' }
         ];
 
         /* ==========================================
@@ -2867,6 +2925,34 @@
             `).join('');
         }
 
+        // Scroll Helpers
+        function scrollToTop(event) {
+            if (event) event.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const menu = document.getElementById('nav-menu');
+            if (menu && menu.classList.contains('open')) {
+                toggleMenu();
+            }
+        }
+
+        function scrollToSection(id, event) {
+            if (event) event.preventDefault();
+            const target = document.getElementById(id);
+            if (target) {
+                const menu = document.getElementById('nav-menu');
+                if (menu && menu.classList.contains('open')) {
+                    toggleMenu();
+                }
+                const rect = target.getBoundingClientRect();
+                const absoluteTop = rect.top + window.scrollY;
+                const offset = id === 'menu-seccion' ? 76 : 80;
+                window.scrollTo({
+                    top: absoluteTop - offset,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
         // Set active category and filter
         function setCategory(categoryId) {
             state.activeCategory = categoryId;
@@ -2876,8 +2962,9 @@
             // Scroll animado a la sección de carta al seleccionar categoría
             const menuSeccion = document.getElementById('menu-seccion');
             if (menuSeccion) {
-                const offsetTop = menuSeccion.offsetTop - 76;
-                window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                const rect = menuSeccion.getBoundingClientRect();
+                const absoluteTop = rect.top + window.scrollY;
+                window.scrollTo({ top: absoluteTop - 76, behavior: 'smooth' });
             }
         }
 
@@ -3154,7 +3241,7 @@
             const quantity = cartItem ? cartItem.qty : 0;
 
             body.innerHTML = `
-                <div style="border-radius: var(--radius-lg); overflow: hidden; height: 180px; margin-bottom: 10px; border: 1px solid var(--glass-border);">
+                <div class="product-detail-image-box">
                     <img src="${product.image}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=400&q=80'">
                 </div>
                 <h2 style="font-family: var(--font-brand); font-size: 1.5rem; margin-bottom: 5px; color: var(--text-light);">${product.name}</h2>
