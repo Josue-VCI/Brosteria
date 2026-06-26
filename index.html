@@ -2857,7 +2857,8 @@
             const savedCart = localStorage.getItem('brosteria_cart');
             if (savedCart) {
                 try {
-                    state.cart = JSON.parse(savedCart);
+                    const parsed = JSON.parse(savedCart);
+                    state.cart = Array.isArray(parsed) ? parsed : [];
                 } catch (e) {
                     state.cart = [];
                 }
@@ -3342,7 +3343,7 @@
                 creamInputs.forEach(input => creams.push(input.value));
             }
 
-            if (cartIndex !== null) {
+            if (typeof cartIndex === 'number' && state.cart[cartIndex]) {
                 // Edit existing item
                 state.cart[cartIndex].qty = qty;
                 state.cart[cartIndex].creams = creams;
@@ -3390,8 +3391,9 @@
             
             let selectedCreams = [];
             let qty = 1;
+            const isEditMode = typeof cartIndex === 'number';
 
-            if (cartIndex !== null && state.cart[cartIndex]) {
+            if (isEditMode && state.cart[cartIndex]) {
                 const cartItem = state.cart[cartIndex];
                 qty = cartItem.qty;
                 selectedCreams = cartItem.creams || [];
@@ -3438,6 +3440,8 @@
                 `;
             }
 
+            const buttonAction = isEditMode ? `confirmAddToCart('${product.id}', ${cartIndex})` : `confirmAddToCart('${product.id}')`;
+
             body.innerHTML = `
                 <div class="product-detail-image-box">
                     <img src="${product.image}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=400&q=80'">
@@ -3462,8 +3466,8 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-weight: 700;" onclick="confirmAddToCart('${product.id}', ${cartIndex})">
-                        <i class="fa-solid fa-cart-plus"></i> ${cartIndex !== null ? 'Guardar Cambios' : 'Agregar al Pedido'}
+                    <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-weight: 700;" onclick="${buttonAction}">
+                        <i class="fa-solid fa-cart-plus"></i> ${isEditMode ? 'Guardar Cambios' : 'Agregar al Pedido'}
                     </button>
                 </div>
             `;
