@@ -2404,58 +2404,7 @@
                     </div>
                 </div>
 
-                <!-- Datos del Cliente -->
-                <div id="checkout-form-box" class="checkout-form-section" style="margin-top: 20px; border-top: 1px dashed var(--glass-border); padding-top: 20px; display: flex; flex-direction: column; gap: 12px;">
-                    <label style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--secondary); display: block; margin-bottom: 5px;">Datos para coordinar tu pedido</label>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                        <div>
-                            <label for="c-name" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; letter-spacing: 0.5px;">Nombre completo *</label>
-                            <input type="text" id="c-name" class="form-control" placeholder="Ej. Juan Pérez" style="padding: 10px 14px; font-size: 0.85rem; box-sizing: border-box;" required>
-                        </div>
-                        <div>
-                            <label for="c-phone" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; letter-spacing: 0.5px;">Número celular *</label>
-                            <input type="tel" id="c-phone" class="form-control" placeholder="Ej. 960373555" style="padding: 10px 14px; font-size: 0.85rem; box-sizing: border-box;" required>
-                        </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                        <div>
-                            <label for="c-type" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; letter-spacing: 0.5px;">Tipo de entrega</label>
-                            <select id="c-type" class="form-control" onchange="toggleAddressField()" style="padding: 10px 14px; font-size: 0.85rem; background-color: #16161a; cursor: pointer; box-sizing: border-box;">
-                                <option value="DELIVERY">Delivery</option>
-                                <option value="PICKUP">Recojo en local</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="c-payment" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; letter-spacing: 0.5px;">Método de pago</label>
-                            <select id="c-payment" class="form-control" style="padding: 10px 14px; font-size: 0.85rem; background-color: #16161a; cursor: pointer; box-sizing: border-box;">
-                                <option value="YAPE">Yape</option>
-                                <option value="PLIN">Plin</option>
-                                <option value="EFECTIVO">Efectivo</option>
-                                <option value="TARJETA">Tarjeta</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;" id="address-grid-row">
-                        <div>
-                            <label for="c-district" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; letter-spacing: 0.5px;">Distrito (Opcional)</label>
-                            <select id="c-district" class="form-control" style="padding: 10px 14px; font-size: 0.85rem; background-color: #16161a; cursor: pointer; box-sizing: border-box;">
-                                <option value="Surquillo">Surquillo</option>
-                                <option value="Miraflores">Miraflores</option>
-                                <option value="Surco">Surco</option>
-                                <option value="Comas">Comas</option>
-                                <option value="Otros">Otros</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="c-address" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; letter-spacing: 0.5px;">Dirección exacta *</label>
-                            <input type="text" id="c-address" class="form-control" placeholder="Ej. Calle Recavarren 120" style="padding: 10px 14px; font-size: 0.85rem; box-sizing: border-box;">
-                        </div>
-                    </div>
-                    <div>
-                        <label for="c-email" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; letter-spacing: 0.5px;">Correo electrónico (Opcional)</label>
-                        <input type="email" id="c-email" class="form-control" placeholder="Ej. cliente@correo.com" style="padding: 10px 14px; font-size: 0.85rem; box-sizing: border-box;">
-                    </div>
-                </div>
+
 
                 <div class="summary-box" id="summary-box" style="margin-top: 20px;">
                     <div class="summary-row total">
@@ -3105,15 +3054,7 @@
             }
         }
 
-        function toggleAddressField() {
-            const type = document.getElementById('c-type').value;
-            const addressRow = document.getElementById('address-grid-row');
-            if (type === 'PICKUP') {
-                addressRow.style.display = 'none';
-            } else {
-                addressRow.style.display = 'grid';
-            }
-        }
+
 
         // Render Cart List in Modal
         function renderCartList() {
@@ -3233,31 +3174,9 @@
             }
         }
 
-        // Handle checkout submisson via WhatsApp Template
+        // Handle checkout submisson via WhatsApp Template (no client form)
         function handleFormSubmit(event) {
             if (event) event.preventDefault();
-
-            // Obtener valores de contacto
-            const name = document.getElementById('c-name').value.trim();
-            const phone = document.getElementById('c-phone').value.trim();
-            const type = document.getElementById('c-type').value;
-            const payment = document.getElementById('c-payment').value;
-            const district = document.getElementById('c-district').value;
-            const address = document.getElementById('c-address').value.trim();
-            const email = document.getElementById('c-email').value.trim();
-
-            if (!name) {
-                alert("Por favor, ingresa tu nombre completo.");
-                return;
-            }
-            if (!phone) {
-                alert("Por favor, ingresa tu número celular.");
-                return;
-            }
-            if (type === 'DELIVERY' && !address) {
-                alert("Por favor, ingresa tu dirección exacta para el delivery.");
-                return;
-            }
 
             // Obtener cremas seleccionadas
             const creamElements = document.querySelectorAll('input[name="creams"]:checked');
@@ -3277,20 +3196,8 @@
             });
             
             orderText += `\n*Cremas:* ${creamsText}\n`;
-            orderText += `*TOTAL A PAGAR: S/. ${(subtotal + (type === 'DELIVERY' ? 5.00 : 0.00)).toFixed(2)}*\n\n`;
-            
-            orderText += `*Datos del Cliente:*\n`;
-            orderText += `- Nombre completo: ${name}\n`;
-            orderText += `- Telefono Celular: ${phone}\n`;
-            orderText += `- Tipo de entrega: ${type === 'DELIVERY' ? 'Delivery' : 'Recojo en Local'}\n`;
-            if (type === 'DELIVERY') {
-                orderText += `- Distrito: ${district}\n`;
-                orderText += `- Direccion de entrega: ${address}\n`;
-            }
-            orderText += `- Metodo de pago: ${payment}\n`;
-            if (email) {
-                orderText += `- Correo: ${email}\n`;
-            }
+            orderText += `*TOTAL A PAGAR: S/. ${subtotal.toFixed(2)}*\n\n`;
+            orderText += `*Por favor, confírmenme los datos para coordinar el Delivery / Recojo en Local, mi Dirección exacta y el Método de Pago (Yape, Plin o Efectivo). ¡Muchas gracias!*`;
 
             // Codificar el texto para la URL de WhatsApp
             const encodedText = encodeURIComponent(orderText);
