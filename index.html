@@ -3197,7 +3197,13 @@
             
             orderText += `\n*Cremas:* ${creamsText}\n`;
             orderText += `*TOTAL A PAGAR: S/. ${subtotal.toFixed(2)}*\n\n`;
-            orderText += `*Por favor, confírmenme los datos para coordinar el Delivery / Recojo en Local, mi Dirección exacta y el Método de Pago (Yape, Plin o Efectivo). ¡Muchas gracias!*`;
+            orderText += `*Por favor, completen los siguientes datos para coordinar el pedido:*\n`;
+            orderText += `- Nombre:\n`;
+            orderText += `- Celular:\n`;
+            orderText += `- Tipo de entrega (Delivery / Recojo):\n`;
+            orderText += `- Dirección exacta (si es Delivery):\n`;
+            orderText += `- Método de pago (Yape / Plin / Efectivo):\n\n`;
+            orderText += `¡Muchas gracias!`;
 
             // Codificar el texto para la URL de WhatsApp
             const encodedText = encodeURIComponent(orderText);
