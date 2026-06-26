@@ -1319,21 +1319,27 @@
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(10, 10, 12, 0.9);
             z-index: 200;
             display: flex;
             justify-content: center;
             align-items: flex-end;
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .modal-overlay {
+                background: rgba(0, 0, 0, 0.8);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+            }
         }
 
         .modal-overlay.open {
             opacity: 1;
-            pointer-events: auto;
+            visibility: visible;
         }
 
         .bottom-sheet {
@@ -1551,6 +1557,9 @@
             font-weight: 700;
             font-size: 0.95rem;
             margin-bottom: 3px;
+            margin-right: 12px;
+            flex-grow: 1;
+            text-align: left;
         }
 
         .cart-item-price {
@@ -2452,7 +2461,7 @@
                 </div>
 
                 <!-- Selección de Cremas -->
-                <div id="creams-selector-box" class="form-group" style="margin-top: 20px; border-top: 1px dashed var(--glass-border); padding-top: 20px;">
+                <div id="creams-selector-box" class="form-group" style="margin-top: 20px; border-top: 1px dashed var(--glass-border); padding-top: 20px; display: none;">
                     <label style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);">Cremas Preferidas (Gratis)</label>
                     <div class="creams-grid" style="margin-top: 10px;">
                         <div class="cream-checkbox">
@@ -3013,8 +3022,8 @@
 
             // Render cards
             grid.innerHTML = filteredProducts.map(product => {
-                const cartItem = state.cart.find(item => item.id === product.id);
-                const quantity = cartItem ? cartItem.qty : 0;
+                // Sumar cantidad total de este ID en el carrito (puede haber varios items por cremas)
+                const totalQtyOfProduct = state.cart.filter(item => item.id === product.id).reduce((sum, item) => sum + item.qty, 0);
                 const isPopular = (product.badge === 'Más Vendido' || product.badge === 'Popular' || product.badge === 'Favorito' || product.badge === 'Recomendado' || product.badge === 'Promo Ahorro');
                 
                 return `
@@ -3028,14 +3037,14 @@
                             <div class="product-footer">
                                 <span class="product-price">S/. ${product.price.toFixed(2)}</span>
                                 
-                                ${quantity > 0 ? `
+                                ${totalQtyOfProduct > 0 ? `
                                     <div class="cart-control" onclick="event.stopPropagation();">
                                         <button class="btn-qty" onclick="updateQty('${product.id}', -1)" aria-label="Disminuir"><i class="fa-solid fa-minus"></i></button>
-                                        <span class="qty-num">${quantity}</span>
+                                        <span class="qty-num">${totalQtyOfProduct}</span>
                                         <button class="btn-qty" onclick="updateQty('${product.id}', 1)" aria-label="Aumentar"><i class="fa-solid fa-plus"></i></button>
                                     </div>
                                 ` : `
-                                    <button class="btn-add-cart" onclick="event.stopPropagation(); addToCart('${product.id}')" aria-label="Agregar al carrito">
+                                    <button class="btn-add-cart" onclick="event.stopPropagation(); ${product.category === 'bebidas' ? `addToCart('${product.id}')` : `openProductDetail('${product.id}')`}" aria-label="Agregar al carrito">
                                         <i class="fa-solid fa-plus"></i> <span>Añadir</span>
                                     </button>
                                 `}
@@ -3161,6 +3170,7 @@
             const overlay = document.getElementById('cart-modal-overlay');
             overlay.classList.add('open');
             document.body.style.overflow = 'hidden'; // Evita scroll de fondo
+            document.documentElement.style.overflow = 'hidden';
             renderCartList();
         }
 
@@ -3171,6 +3181,7 @@
                 overlay.classList.remove('open');
                 if (!document.getElementById('product-detail-overlay').classList.contains('open')) {
                     document.body.style.overflow = '';
+                    document.documentElement.style.overflow = '';
                 }
             }
         }
@@ -3198,32 +3209,40 @@
             }
 
             document.getElementById('summary-box').classList.remove('hidden');
-            document.getElementById('creams-selector-box').classList.remove('hidden');
+            document.getElementById('creams-selector-box').classList.add('hidden'); // Siempre oculto
             document.getElementById('promo-registration-box').classList.remove('hidden');
             
             // Inyectar items
-            container.innerHTML = state.cart.map(item => {
+            container.innerHTML = state.cart.map((item, index) => {
                 const subtotal = item.price * item.qty;
-                // Buscar descripción en la base de datos para mostrarla en el carrito
                 const product = MENU_DB.find(p => p.id === item.id);
                 const descText = product ? product.desc : '';
+                
+                const itemCreamsText = (item.creams && item.creams.length > 0)
+                    ? `Cremas: ${item.creams.join(', ')}`
+                    : (product && productRequiresCreams(product) ? 'Sin cremas' : '');
+
                 return `
                     <div class="cart-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
                         <!-- Row 1: Name and Delete button -->
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div class="cart-item-name" style="cursor: pointer; color: var(--primary-light); text-decoration: underline;" onclick="event.stopPropagation(); closeCartModal(event, true); openProductDetail('${item.id}')">${item.name}</div>
-                            <button class="btn-delete-item" onclick="deleteFromCart('${item.id}')" aria-label="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
+                            <div class="cart-item-name" style="cursor: pointer; color: var(--primary-light); text-decoration: underline;" onclick="event.stopPropagation(); closeCartModal(event, true); openProductDetail('${item.id}', ${index})">${item.name}</div>
+                            <button class="btn-delete-item" onclick="deleteFromCartAtIndex(${index})" aria-label="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                         <!-- Row 2: Full-width Description -->
                         ${descText ? `<div style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.3;">${descText}</div>` : ''}
+                        
+                        <!-- Row 2.5: Selected creams -->
+                        ${itemCreamsText ? `<div style="font-size: 0.78rem; color: var(--secondary); font-weight: 700; margin-top: 2px;"><i class="fa-solid fa-fire-burner"></i> ${itemCreamsText}</div>` : ''}
+
                         <!-- Row 3: Controls and subtotal/price -->
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.03);">
                             <div style="display: flex; align-items: center; gap: 8px;">
                                 <span style="font-size: 0.8rem; color: var(--text-muted);">S/. ${item.price.toFixed(2)} x</span>
                                 <div class="cart-item-qty-control" style="margin: 0;">
-                                    <button class="btn-qty-mini" onclick="updateQty('${item.id}', -1)"><i class="fa-solid fa-minus"></i></button>
+                                    <button class="btn-qty-mini" onclick="updateQtyByIndex(${index}, -1)"><i class="fa-solid fa-minus"></i></button>
                                     <span class="qty-num-mini">${item.qty}</span>
-                                    <button class="btn-qty-mini" onclick="updateQty('${item.id}', 1)"><i class="fa-solid fa-plus"></i></button>
+                                    <button class="btn-qty-mini" onclick="updateQtyByIndex(${index}, 1)"><i class="fa-solid fa-plus"></i></button>
                                 </div>
                             </div>
                             <span class="cart-item-subtotal">S/. ${subtotal.toFixed(2)}</span>
@@ -3242,6 +3261,49 @@
             ]);
         }
 
+        // Update quantity in cart by index
+        function updateQtyByIndex(itemIndex, change) {
+            if (itemIndex < 0 || itemIndex >= state.cart.length) return;
+
+            const item = state.cart[itemIndex];
+            item.qty += change;
+
+            if (item.qty <= 0) {
+                state.cart.splice(itemIndex, 1);
+                showToast(`Eliminado del pedido`, 'error');
+            }
+
+            saveCartToStorage();
+            renderProducts();
+            updateCartFab();
+            
+            if (document.getElementById('cart-modal-overlay').classList.contains('open')) {
+                renderCartList();
+            }
+
+            if (navigator.vibrate) {
+                navigator.vibrate(40);
+            }
+        }
+
+        // Remove completely from cart by index
+        function deleteFromCartAtIndex(itemIndex) {
+            if (itemIndex < 0 || itemIndex >= state.cart.length) return;
+            
+            const name = state.cart[itemIndex].name;
+            state.cart.splice(itemIndex, 1);
+            
+            saveCartToStorage();
+            renderProducts();
+            updateCartFab();
+            
+            if (document.getElementById('cart-modal-overlay').classList.contains('open')) {
+                renderCartList();
+            }
+
+            showToast(`Se quitó ${name}`, 'error');
+        }
+
         // Dynamic footer button generation for Bottom Sheet
         function renderSheetFooter(buttons) {
             const footer = document.getElementById('sheet-footer');
@@ -3250,48 +3312,166 @@
             `).join('');
         }
 
+        // Check if product requires creams
+        function productRequiresCreams(product) {
+            return product.category !== 'bebidas';
+        }
+
+        // Helper to change quantity inside detail modal
+        function changeDetailQty(change) {
+            const qtySpan = document.getElementById('detail-qty-num');
+            if (qtySpan) {
+                let currentQty = parseInt(qtySpan.innerText) || 1;
+                currentQty += change;
+                if (currentQty < 1) currentQty = 1;
+                qtySpan.innerText = currentQty;
+            }
+        }
+
+        // Helper to confirm addition from detail modal
+        function confirmAddToCart(productId, cartIndex = null) {
+            const product = MENU_DB.find(p => p.id === productId);
+            if (!product) return;
+
+            const qtySpan = document.getElementById('detail-qty-num');
+            const qty = qtySpan ? parseInt(qtySpan.innerText) : 1;
+
+            let creams = [];
+            if (productRequiresCreams(product)) {
+                const creamInputs = document.querySelectorAll('input[name="detail-creams"]:checked');
+                creamInputs.forEach(input => creams.push(input.value));
+            }
+
+            if (cartIndex !== null) {
+                // Edit existing item
+                state.cart[cartIndex].qty = qty;
+                state.cart[cartIndex].creams = creams;
+                showToast(`Pedido actualizado`, 'success');
+            } else {
+                // Add new item
+                // Compare by product ID AND creams combination
+                const existingItemIndex = state.cart.findIndex(item => {
+                    if (item.id !== productId) return false;
+                    const itemCreams = item.creams || [];
+                    if (itemCreams.length !== creams.length) return false;
+                    return itemCreams.every(c => creams.includes(c));
+                });
+
+                if (existingItemIndex !== -1) {
+                    state.cart[existingItemIndex].qty += qty;
+                } else {
+                    state.cart.push({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        qty: qty,
+                        creams: creams
+                    });
+                }
+                showToast(`Añadido: ${product.name}`, 'success');
+            }
+
+            saveCartToStorage();
+            renderProducts();
+            updateCartFab();
+            closeProductDetailModal(null, true);
+
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+        }
+
         // Product Detail Modal Logic
-        function openProductDetail(productId) {
+        function openProductDetail(productId, cartIndex = null) {
             const product = MENU_DB.find(p => p.id === productId);
             if (!product) return;
 
             const body = document.getElementById('product-detail-body');
-            const cartItem = state.cart.find(item => item.id === product.id);
-            const quantity = cartItem ? cartItem.qty : 0;
+            
+            let selectedCreams = [];
+            let qty = 1;
+
+            if (cartIndex !== null && state.cart[cartIndex]) {
+                const cartItem = state.cart[cartIndex];
+                qty = cartItem.qty;
+                selectedCreams = cartItem.creams || [];
+            } else {
+                // Por defecto, marcar mayonesa, ketchup y aji
+                selectedCreams = ['Mayonesa', 'Ketchup', 'Ají de la Casa'];
+            }
 
             const isPopular = (product.badge === 'Más Vendido' || product.badge === 'Popular' || product.badge === 'Favorito' || product.badge === 'Recomendado' || product.badge === 'Promo Ahorro');
             const titleHtml = isPopular ? `${product.name} <i class="fa-solid fa-fire" style="color: var(--primary); font-size: 1.25rem; margin-left: 4px;"></i>` : product.name;
+
+            let creamsHtml = '';
+            if (productRequiresCreams(product)) {
+                creamsHtml = `
+                    <div class="form-group" style="text-align: left; margin-top: 15px; border-top: 1px dashed var(--glass-border); padding-top: 15px;">
+                        <label style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); display: block; margin-bottom: 8px;">Cremas para este producto:</label>
+                        <div class="creams-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 5px;">
+                            <div class="cream-checkbox">
+                                <input type="checkbox" id="detail-cream-mayo" name="detail-creams" value="Mayonesa" ${selectedCreams.includes('Mayonesa') ? 'checked' : ''}>
+                                <label for="detail-cream-mayo" class="cream-label" style="font-size: 0.72rem; padding: 6px 4px; justify-content: center; width: 100%; box-sizing: border-box;"><i class="fa-solid fa-check"></i> Mayo</label>
+                            </div>
+                            <div class="cream-checkbox">
+                                <input type="checkbox" id="detail-cream-ketchup" name="detail-creams" value="Ketchup" ${selectedCreams.includes('Ketchup') ? 'checked' : ''}>
+                                <label for="detail-cream-ketchup" class="cream-label" style="font-size: 0.72rem; padding: 6px 4px; justify-content: center; width: 100%; box-sizing: border-box;"><i class="fa-solid fa-check"></i> Ketchup</label>
+                            </div>
+                            <div class="cream-checkbox">
+                                <input type="checkbox" id="detail-cream-aji" name="detail-creams" value="Ají de la Casa" ${selectedCreams.includes('Ají de la Casa') ? 'checked' : ''}>
+                                <label for="detail-cream-aji" class="cream-label" style="font-size: 0.72rem; padding: 6px 4px; justify-content: center; width: 100%; box-sizing: border-box;"><i class="fa-solid fa-check"></i> Ají</label>
+                            </div>
+                            <div class="cream-checkbox">
+                                <input type="checkbox" id="detail-cream-mostaza" name="detail-creams" value="Mostaza" ${selectedCreams.includes('Mostaza') ? 'checked' : ''}>
+                                <label for="detail-cream-mostaza" class="cream-label" style="font-size: 0.72rem; padding: 6px 4px; justify-content: center; width: 100%; box-sizing: border-box;"><i class="fa-solid fa-check"></i> Mostaza</label>
+                            </div>
+                            <div class="cream-checkbox">
+                                <input type="checkbox" id="detail-cream-tartara" name="detail-creams" value="Tártara Premium" ${selectedCreams.includes('Tártara Premium') ? 'checked' : ''}>
+                                <label for="detail-cream-tartara" class="cream-label" style="font-size: 0.72rem; padding: 6px 4px; justify-content: center; width: 100%; box-sizing: border-box;"><i class="fa-solid fa-check"></i> Tártara</label>
+                            </div>
+                            <div class="cream-checkbox">
+                                <input type="checkbox" id="detail-cream-golf" name="detail-creams" value="Salsa Golf" ${selectedCreams.includes('Salsa Golf') ? 'checked' : ''}>
+                                <label for="detail-cream-golf" class="cream-label" style="font-size: 0.72rem; padding: 6px 4px; justify-content: center; width: 100%; box-sizing: border-box;"><i class="fa-solid fa-check"></i> Golf</label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
 
             body.innerHTML = `
                 <div class="product-detail-image-box">
                     <img src="${product.image}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=400&q=80'">
                 </div>
-                <h2 style="font-family: var(--font-brand); font-size: 1.5rem; margin-bottom: 5px; color: var(--text-light); display: flex; align-items: center; justify-content: center; gap: 6px;">${titleHtml}</h2>
+                <h2 style="font-family: var(--font-brand); font-size: 1.5rem; margin-top: 12px; margin-bottom: 8px; color: var(--text-light); display: flex; align-items: center; justify-content: center; gap: 6px;">${titleHtml}</h2>
                 <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.4; margin-bottom: 15px; text-align: left;">${product.desc}</p>
                 
-                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 12px 18px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); margin-bottom: 15px;">
-                    <span style="font-size: 0.95rem; font-weight: 700; color: var(--text-muted);">Precio:</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 12px 18px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); margin-bottom: 10px;">
+                    <span style="font-size: 0.95rem; font-weight: 700; color: var(--text-muted);">Precio Unitario:</span>
                     <span style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--secondary); font-weight: 700;">S/. ${product.price.toFixed(2)}</span>
                 </div>
 
-                <div style="display: flex; gap: 15px; justify-content: center; align-items: center; width: 100%;">
-                    ${quantity > 0 ? `
-                        <div class="cart-control" style="padding: 4px 12px; gap: 12px; width: 100%; justify-content: center;">
-                            <button class="btn-qty" style="width: 32px; height: 32px;" onclick="event.stopPropagation(); updateQty('${product.id}', -1); openProductDetail('${product.id}')"><i class="fa-solid fa-minus"></i></button>
-                            <span class="qty-num" style="font-size: 1.1rem;">${quantity}</span>
-                            <button class="btn-qty" style="width: 32px; height: 32px;" onclick="event.stopPropagation(); updateQty('${product.id}', 1); openProductDetail('${product.id}')"><i class="fa-solid fa-plus"></i></button>
+                ${creamsHtml}
+
+                <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; margin-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.15); padding: 10px 20px; border-radius: var(--radius-md); border: 1px solid var(--glass-border);">
+                        <span style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted);">Cantidad:</span>
+                        <div class="cart-item-qty-control" style="margin: 0;">
+                            <button class="btn-qty-mini" style="width: 30px; height: 30px;" onclick="changeDetailQty(-1)"><i class="fa-solid fa-minus"></i></button>
+                            <span id="detail-qty-num" style="font-size: 1.1rem; font-weight: 700; min-width: 30px; text-align: center; color: var(--text-light);">${qty}</span>
+                            <button class="btn-qty-mini" style="width: 30px; height: 30px;" onclick="changeDetailQty(1)"><i class="fa-solid fa-plus"></i></button>
                         </div>
-                    ` : `
-                        <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="event.stopPropagation(); addToCart('${product.id}'); openProductDetail('${product.id}')">
-                            <i class="fa-solid fa-cart-plus"></i> Agregar al Pedido
-                        </button>
-                    `}
+                    </div>
+
+                    <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-weight: 700;" onclick="confirmAddToCart('${product.id}', ${cartIndex})">
+                        <i class="fa-solid fa-cart-plus"></i> ${cartIndex !== null ? 'Guardar Cambios' : 'Agregar al Pedido'}
+                    </button>
                 </div>
             `;
 
             const overlay = document.getElementById('product-detail-overlay');
             overlay.classList.add('open');
             document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
         }
 
         function closeProductDetailModal(event, forceClose = false) {
@@ -3300,6 +3480,7 @@
                 overlay.classList.remove('open');
                 if (!document.getElementById('cart-modal-overlay').classList.contains('open')) {
                     document.body.style.overflow = '';
+                    document.documentElement.style.overflow = '';
                 }
             }
         }
@@ -3307,12 +3488,6 @@
         // Handle checkout submisson via WhatsApp Template (no client form)
         function handleFormSubmit(event) {
             if (event) event.preventDefault();
-
-            // Obtener cremas seleccionadas
-            const creamElements = document.querySelectorAll('input[name="creams"]:checked');
-            let creams = [];
-            creamElements.forEach(el => creams.push(el.value));
-            const creamsText = creams.length > 0 ? creams.join(', ') : 'Ninguna';
 
             // Obtener correo electrónico opcional
             const emailInput = document.getElementById('c-email');
@@ -3326,11 +3501,19 @@
             state.cart.forEach(item => {
                 const itemSubtotal = item.price * item.qty;
                 subtotal += itemSubtotal;
-                orderText += `- ${item.qty}x ${item.name} (S/. ${itemSubtotal.toFixed(2)})\n`;
+
+                const product = MENU_DB.find(p => p.id === item.id);
+                let itemCreamsText = '';
+                if (product && productRequiresCreams(product)) {
+                    itemCreamsText = (item.creams && item.creams.length > 0)
+                        ? ` (Cremas: ${item.creams.join(', ')})`
+                        : ' (Sin cremas)';
+                }
+
+                orderText += `- ${item.qty}x ${item.name}${itemCreamsText} (S/. ${itemSubtotal.toFixed(2)})\n`;
             });
             
-            orderText += `\n*Cremas:* ${creamsText}\n`;
-            orderText += `*TOTAL A PAGAR: S/. ${subtotal.toFixed(2)}*\n`;
+            orderText += `\n*TOTAL A PAGAR: S/. ${subtotal.toFixed(2)}*\n`;
 
             if (emailText) {
                 orderText += `\n*Registro de Promociones:*\n- Correo: ${emailText}\n`;
