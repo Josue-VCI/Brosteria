@@ -3213,8 +3213,6 @@
                 orderText += `\n*Registro de Promociones:*\n- Correo: ${emailText}\n`;
             }
 
-            orderText += `\n*Por favor, confírmenme los datos para coordinar el Delivery / Recojo en Local, mi Dirección exacta y el Método de Pago (Yape, Plin o Efectivo). ¡Muchas gracias!*`;
-
             // Codificar el texto para la URL de WhatsApp
             const encodedText = encodeURIComponent(orderText);
             const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedText}`;
