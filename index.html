@@ -2405,29 +2405,29 @@
                 </div>
 
                 <!-- Datos del Cliente -->
-                <div id="checkout-form-box" class="form-group" style="margin-top: 20px; border-top: 1px dashed var(--glass-border); padding-top: 20px;">
-                    <label style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);">Datos para coordinar tu pedido</label>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
+                <div id="checkout-form-box" class="checkout-form-section" style="margin-top: 20px; border-top: 1px dashed var(--glass-border); padding-top: 20px; display: flex; flex-direction: column; gap: 12px;">
+                    <label style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--secondary); display: block; margin-bottom: 5px;">Datos para coordinar tu pedido</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                         <div>
-                            <label for="c-name" style="font-size: 0.75rem; color: #a0a0a8; display: block; margin-bottom: 4px;">Nombre completo *</label>
-                            <input type="text" id="c-name" placeholder="Ej. Juan Pérez" style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.85rem; box-sizing: border-box;" required>
+                            <label for="c-name" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; letter-spacing: 0.5px;">Nombre completo *</label>
+                            <input type="text" id="c-name" class="form-control" placeholder="Ej. Juan Pérez" style="padding: 10px 14px; font-size: 0.85rem; box-sizing: border-box;" required>
                         </div>
                         <div>
-                            <label for="c-phone" style="font-size: 0.75rem; color: #a0a0a8; display: block; margin-bottom: 4px;">Número celular *</label>
-                            <input type="tel" id="c-phone" placeholder="Ej. 960373555" style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.85rem; box-sizing: border-box;" required>
+                            <label for="c-phone" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; letter-spacing: 0.5px;">Número celular *</label>
+                            <input type="tel" id="c-phone" class="form-control" placeholder="Ej. 960373555" style="padding: 10px 14px; font-size: 0.85rem; box-sizing: border-box;" required>
                         </div>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                         <div>
-                            <label for="c-type" style="font-size: 0.75rem; color: #a0a0a8; display: block; margin-bottom: 4px;">Tipo de entrega</label>
-                            <select id="c-type" onchange="toggleAddressField()" style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid var(--glass-border); background: #121214; color: #fff; font-size: 0.85rem; box-sizing: border-box;">
+                            <label for="c-type" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; letter-spacing: 0.5px;">Tipo de entrega</label>
+                            <select id="c-type" class="form-control" onchange="toggleAddressField()" style="padding: 10px 14px; font-size: 0.85rem; background-color: #16161a; cursor: pointer; box-sizing: border-box;">
                                 <option value="DELIVERY">Delivery</option>
                                 <option value="PICKUP">Recojo en local</option>
                             </select>
                         </div>
                         <div>
-                            <label for="c-payment" style="font-size: 0.75rem; color: #a0a0a8; display: block; margin-bottom: 4px;">Método de pago</label>
-                            <select id="c-payment" style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid var(--glass-border); background: #121214; color: #fff; font-size: 0.85rem; box-sizing: border-box;">
+                            <label for="c-payment" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; letter-spacing: 0.5px;">Método de pago</label>
+                            <select id="c-payment" class="form-control" style="padding: 10px 14px; font-size: 0.85rem; background-color: #16161a; cursor: pointer; box-sizing: border-box;">
                                 <option value="YAPE">Yape</option>
                                 <option value="PLIN">Plin</option>
                                 <option value="EFECTIVO">Efectivo</option>
@@ -2435,10 +2435,10 @@
                             </select>
                         </div>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;" id="address-grid-row">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;" id="address-grid-row">
                         <div>
-                            <label for="c-district" style="font-size: 0.75rem; color: #a0a0a8; display: block; margin-bottom: 4px;">Distrito (Opcional)</label>
-                            <select id="c-district" style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid var(--glass-border); background: #121214; color: #fff; font-size: 0.85rem; box-sizing: border-box;">
+                            <label for="c-district" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; letter-spacing: 0.5px;">Distrito (Opcional)</label>
+                            <select id="c-district" class="form-control" style="padding: 10px 14px; font-size: 0.85rem; background-color: #16161a; cursor: pointer; box-sizing: border-box;">
                                 <option value="Surquillo">Surquillo</option>
                                 <option value="Miraflores">Miraflores</option>
                                 <option value="Surco">Surco</option>
@@ -2447,13 +2447,13 @@
                             </select>
                         </div>
                         <div>
-                            <label for="c-address" style="font-size: 0.75rem; color: #a0a0a8; display: block; margin-bottom: 4px;">Dirección exacta *</label>
-                            <input type="text" id="c-address" placeholder="Ej. Calle Recavarren 120" style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.85rem; box-sizing: border-box;">
+                            <label for="c-address" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; letter-spacing: 0.5px;">Dirección exacta *</label>
+                            <input type="text" id="c-address" class="form-control" placeholder="Ej. Calle Recavarren 120" style="padding: 10px 14px; font-size: 0.85rem; box-sizing: border-box;">
                         </div>
                     </div>
-                    <div style="margin-top: 10px;">
-                        <label for="c-email" style="font-size: 0.75rem; color: #a0a0a8; display: block; margin-bottom: 4px;">Correo electrónico (Opcional)</label>
-                        <input type="email" id="c-email" placeholder="Ej. cliente@correo.com" style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.85rem; box-sizing: border-box;">
+                    <div>
+                        <label for="c-email" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; letter-spacing: 0.5px;">Correo electrónico (Opcional)</label>
+                        <input type="email" id="c-email" class="form-control" placeholder="Ej. cliente@correo.com" style="padding: 10px 14px; font-size: 0.85rem; box-sizing: border-box;">
                     </div>
                 </div>
 
