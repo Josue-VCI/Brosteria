@@ -2161,7 +2161,7 @@
             
             <ul class="nav-menu" id="nav-menu">
                 <li><a href="#" class="nav-link" onclick="scrollToTop(event)">Inicio</a></li>
-                <li><a href="#menu-seccion" class="nav-link" onclick="scrollToSection('menu-seccion', event)">Carta</a></li>
+                <li><a href="#menu-seccion" class="nav-link" onclick="scrollToSection('menu-seccion-anchor', event)">Carta</a></li>
                 <li><a href="#nosotros" class="nav-link" onclick="scrollToSection('nosotros', event)">Nosotros</a></li>
                 <li><a href="#testimonios" class="nav-link" onclick="scrollToSection('testimonios', event)">Reseñas</a></li>
                 <li><a href="#ubicacion" class="nav-link" onclick="scrollToSection('ubicacion', event)">Ubicación</a></li>
@@ -2186,13 +2186,14 @@
             <h2>Sabor crujiente y jugoso <span>que te hace volver.</span></h2>
             <p class="hero-tagline">Elaborado con las mejores piezas de pollo fresco, marinado secreto y fritura a presión dorada perfecta. Acompañado de papas peruanas crocantes y ensalada fresca.</p>
             <div class="hero-ctas">
-                <a href="#menu-seccion" class="btn btn-primary" onclick="scrollToSection('menu-seccion', event)"><i class="fa-solid fa-utensils"></i> Ver la Carta</a>
+                <a href="#menu-seccion" class="btn btn-primary" onclick="scrollToSection('menu-seccion-anchor', event)"><i class="fa-solid fa-utensils"></i> Ver la Carta</a>
                 <a href="#ubicacion" class="btn btn-secondary" onclick="scrollToSection('ubicacion', event)"><i class="fa-solid fa-map-pin"></i> Visítanos</a>
             </div>
         </div>
     </header>
 
     <!-- 4. CATEGORIES BAR (STICKY) -->
+    <div id="menu-seccion-anchor"></div>
     <section class="menu-nav-section" id="menu-seccion">
         <div class="container menu-nav-wrapper">
             <div class="categories-container" id="categories-container">
@@ -2385,11 +2386,11 @@
                 <div>
                     <h4 class="footer-title">Enlaces Rápidos</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Inicio</a></li>
-                        <li><a href="#menu-seccion">Carta Digital</a></li>
-                        <li><a href="#nosotros">Nosotros</a></li>
-                        <li><a href="#testimonios">Reseñas</a></li>
-                        <li><a href="#ubicacion">Localización</a></li>
+                        <li><a href="#" onclick="scrollToTop(event)">Inicio</a></li>
+                        <li><a href="#menu-seccion" onclick="scrollToSection('menu-seccion-anchor', event)">Carta Digital</a></li>
+                        <li><a href="#nosotros" onclick="scrollToSection('nosotros', event)">Nosotros</a></li>
+                        <li><a href="#testimonios" onclick="scrollToSection('testimonios', event)">Reseñas</a></li>
+                        <li><a href="#ubicacion" onclick="scrollToSection('ubicacion', event)">Localización</a></li>
                     </ul>
                 </div>
                 
@@ -2439,7 +2440,7 @@
                     <i class="fa-solid fa-basket-shopping"></i>
                     <h3 id="modal-title-text">Tu Pedido</h3>
                 </div>
-                <button class="sheet-close" onclick="closeCartModal(event, true)">&times;</button>
+                <button class="sheet-close" onclick="event.stopPropagation(); closeCartModal(event, true)">&times;</button>
             </div>
 
             <!-- Body Scroll Area -->
@@ -2511,7 +2512,7 @@
                     <i class="fa-solid fa-circle-info" style="color: var(--primary);"></i>
                     <h3>Detalle de Producto</h3>
                 </div>
-                <button class="sheet-close" onclick="closeProductDetailModal(event, true)">&times;</button>
+                <button class="sheet-close" onclick="event.stopPropagation(); closeProductDetailModal(event, true)">&times;</button>
             </div>
             <div class="sheet-body" id="product-detail-body" style="padding: 20px 25px 30px 25px; text-align: center; display: flex; flex-direction: column; gap: 15px;">
                 <!-- Inyectado dinámicamente -->
@@ -2961,7 +2962,8 @@
                 setTimeout(() => {
                     const rect = target.getBoundingClientRect();
                     const absoluteTop = rect.top + window.scrollY;
-                    const offset = id === 'menu-seccion' ? 76 : 80;
+                    // Si es menu-seccion o menu-seccion-anchor, usar offset de 76px (altura del navbar sticky)
+                    const offset = (id === 'menu-seccion' || id === 'menu-seccion-anchor') ? 76 : 80;
                     window.scrollTo({
                         top: absoluteTop - offset,
                         behavior: 'smooth'
@@ -2976,10 +2978,10 @@
             renderCategories();
             renderProducts();
             
-            // Scroll animado a la sección de carta al seleccionar categoría
-            const menuSeccion = document.getElementById('menu-seccion');
-            if (menuSeccion) {
-                const rect = menuSeccion.getBoundingClientRect();
+            // Scroll animado a la sección de carta al seleccionar categoría usando el ancla estática
+            const anchor = document.getElementById('menu-seccion-anchor') || document.getElementById('menu-seccion');
+            if (anchor) {
+                const rect = anchor.getBoundingClientRect();
                 const absoluteTop = rect.top + window.scrollY;
                 window.scrollTo({ top: absoluteTop - 76, behavior: 'smooth' });
             }
@@ -3164,8 +3166,8 @@
 
         // Close Cart Modal Sheet
         function closeCartModal(event, forceClose = false) {
-            if (forceClose || event.target === document.getElementById('cart-modal-overlay')) {
-                const overlay = document.getElementById('cart-modal-overlay');
+            const overlay = document.getElementById('cart-modal-overlay');
+            if (forceClose || (event && event.target === overlay)) {
                 overlay.classList.remove('open');
                 if (!document.getElementById('product-detail-overlay').classList.contains('open')) {
                     document.body.style.overflow = '';
@@ -3185,7 +3187,7 @@
                     <div class="cart-empty">
                         <i class="fa-solid fa-basket-shopping"></i>
                         <p>Aún no has agregado nada a tu pedido.</p>
-                        <button class="btn btn-primary" onclick="closeCartModal(null, true)">Ver la Carta</button>
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); closeCartModal(event, true); scrollToSection('menu-seccion-anchor')">Ver la Carta</button>
                     </div>
                 `;
                 document.getElementById('summary-box').classList.add('hidden');
@@ -3209,7 +3211,7 @@
                     <div class="cart-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
                         <!-- Row 1: Name and Delete button -->
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div class="cart-item-name" style="cursor: pointer; color: var(--primary-light); text-decoration: underline;" onclick="closeCartModal(null, true); openProductDetail('${item.id}')">${item.name}</div>
+                            <div class="cart-item-name" style="cursor: pointer; color: var(--primary-light); text-decoration: underline;" onclick="event.stopPropagation(); closeCartModal(event, true); openProductDetail('${item.id}')">${item.name}</div>
                             <button class="btn-delete-item" onclick="deleteFromCart('${item.id}')" aria-label="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                         <!-- Row 2: Full-width Description -->
@@ -3235,7 +3237,7 @@
             totalSpan.innerText = `S/. ${subtotal.toFixed(2)}`;
 
             renderSheetFooter([
-                { text: 'Seguir Comprando', class: 'btn-secondary', action: 'closeCartModal(null, true)' },
+                { text: 'Seguir Comprando', class: 'btn-secondary', action: 'event.stopPropagation(); closeCartModal(event, true)' },
                 { text: 'Pedir por WhatsApp', class: 'btn-primary', action: 'handleFormSubmit(event)' }
             ]);
         }
@@ -3293,8 +3295,8 @@
         }
 
         function closeProductDetailModal(event, forceClose = false) {
-            if (forceClose || event.target === document.getElementById('product-detail-overlay')) {
-                const overlay = document.getElementById('product-detail-overlay');
+            const overlay = document.getElementById('product-detail-overlay');
+            if (forceClose || (event && event.target === overlay)) {
                 overlay.classList.remove('open');
                 if (!document.getElementById('cart-modal-overlay').classList.contains('open')) {
                     document.body.style.overflow = '';
