@@ -2404,7 +2404,12 @@
                     </div>
                 </div>
 
-
+                <!-- Registro de Promociones (Opcional) -->
+                <div id="promo-registration-box" class="form-group" style="margin-top: 20px; border-top: 1px dashed var(--glass-border); padding-top: 20px;">
+                    <label style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--secondary); display: block; margin-bottom: 5px;">¡Recibe Promociones Exclusivas! 🎁</label>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px; line-height: 1.3;">Ingresa tu correo para recibir descuentos, combos mundialistas y ofertas especiales en tu bandeja (Opcional).</p>
+                    <input type="email" id="c-email" class="form-control" placeholder="tu-correo@ejemplo.com" style="box-sizing: border-box;">
+                </div>
 
                 <div class="summary-box" id="summary-box" style="margin-top: 20px;">
                     <div class="summary-row total">
@@ -3071,12 +3076,14 @@
                 `;
                 document.getElementById('summary-box').classList.add('hidden');
                 document.getElementById('creams-selector-box').classList.add('hidden');
+                document.getElementById('promo-registration-box').classList.add('hidden');
                 renderSheetFooter([]);
                 return;
             }
 
             document.getElementById('summary-box').classList.remove('hidden');
             document.getElementById('creams-selector-box').classList.remove('hidden');
+            document.getElementById('promo-registration-box').classList.remove('hidden');
             
             // Inyectar items
             container.innerHTML = state.cart.map(item => {
@@ -3184,6 +3191,10 @@
             creamElements.forEach(el => creams.push(el.value));
             const creamsText = creams.length > 0 ? creams.join(', ') : 'Ninguna';
 
+            // Obtener correo electrónico opcional
+            const emailInput = document.getElementById('c-email');
+            const emailText = emailInput ? emailInput.value.trim() : '';
+
             // Armar texto del pedido
             let orderText = `*NUEVO PEDIDO - LA BROSTERÍA*\n\n`;
             orderText += `*Detalle del Pedido:*\n`;
@@ -3196,14 +3207,13 @@
             });
             
             orderText += `\n*Cremas:* ${creamsText}\n`;
-            orderText += `*TOTAL A PAGAR: S/. ${subtotal.toFixed(2)}*\n\n`;
-            orderText += `*Por favor, completen los siguientes datos para coordinar el pedido:*\n`;
-            orderText += `- Nombre:\n`;
-            orderText += `- Celular:\n`;
-            orderText += `- Tipo de entrega (Delivery / Recojo):\n`;
-            orderText += `- Dirección exacta (si es Delivery):\n`;
-            orderText += `- Método de pago (Yape / Plin / Efectivo):\n\n`;
-            orderText += `¡Muchas gracias!`;
+            orderText += `*TOTAL A PAGAR: S/. ${subtotal.toFixed(2)}*\n`;
+
+            if (emailText) {
+                orderText += `\n*Registro de Promociones:*\n- Correo: ${emailText}\n`;
+            }
+
+            orderText += `\n*Por favor, confírmenme los datos para coordinar el Delivery / Recojo en Local, mi Dirección exacta y el Método de Pago (Yape, Plin o Efectivo). ¡Muchas gracias!*`;
 
             // Codificar el texto para la URL de WhatsApp
             const encodedText = encodeURIComponent(orderText);
