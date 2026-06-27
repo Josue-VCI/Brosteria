@@ -6,6 +6,16 @@
     <meta name="description" content="La Brostería - El pollo broster más crujiente y sabroso de la ciudad. Combos mundialistas, hamburguesas, salchipapas, alitas y más. ¡Haz tu pedido por WhatsApp!">
     <title>La Brostería - Sabor Crujiente Premium 🍗</title>
     
+    <!-- Google Analytics (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    
     <!-- Favicon (Icono de pestaña del navegador) -->
     <link rel="icon" type="image/png" href="images/logo.png">
     
@@ -1327,6 +1337,7 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
+            overscroll-behavior: contain;
         }
 
         @media (min-width: 768px) {
@@ -1355,6 +1366,7 @@
             box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
             transform: translateY(100%);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overscroll-behavior: contain;
         }
 
         .modal-overlay.open .bottom-sheet {
@@ -1522,6 +1534,7 @@
             padding: 25px;
             overflow-y: auto;
             flex-grow: 1;
+            overscroll-behavior: contain;
         }
 
         /* Step 1 Content: Item List */
@@ -3168,12 +3181,39 @@
            MODAL (BOTTOM SHEET) LOGIC
            ========================================== */
         
+        let savedScrollY = 0;
+        let bodyScrollLockCount = 0;
+
+        function lockBodyScroll() {
+            bodyScrollLockCount++;
+            if (bodyScrollLockCount === 1) {
+                savedScrollY = window.scrollY;
+                document.body.style.position = 'fixed';
+                document.body.style.top = `-${savedScrollY}px`;
+                document.body.style.width = '100%';
+                document.body.style.overflow = 'hidden';
+                document.documentElement.style.overflow = 'hidden';
+            }
+        }
+
+        function unlockBodyScroll() {
+            bodyScrollLockCount--;
+            if (bodyScrollLockCount <= 0) {
+                bodyScrollLockCount = 0;
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
+                document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
+                window.scrollTo(0, savedScrollY);
+            }
+        }
+
         // Open Cart Modal Sheet
         function openCartModal() {
             const overlay = document.getElementById('cart-modal-overlay');
             overlay.classList.add('open');
-            document.body.style.overflow = 'hidden'; // Evita scroll de fondo
-            document.documentElement.style.overflow = 'hidden';
+            lockBodyScroll();
             renderCartList();
         }
 
@@ -3182,10 +3222,7 @@
             const overlay = document.getElementById('cart-modal-overlay');
             if (forceClose || (event && event.target === overlay)) {
                 overlay.classList.remove('open');
-                if (!document.getElementById('product-detail-overlay').classList.contains('open')) {
-                    document.body.style.overflow = '';
-                    document.documentElement.style.overflow = '';
-                }
+                unlockBodyScroll();
             }
         }
 
@@ -3476,18 +3513,14 @@
 
             const overlay = document.getElementById('product-detail-overlay');
             overlay.classList.add('open');
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden';
+            lockBodyScroll();
         }
 
         function closeProductDetailModal(event, forceClose = false) {
             const overlay = document.getElementById('product-detail-overlay');
             if (forceClose || (event && event.target === overlay)) {
                 overlay.classList.remove('open');
-                if (!document.getElementById('cart-modal-overlay').classList.contains('open')) {
-                    document.body.style.overflow = '';
-                    document.documentElement.style.overflow = '';
-                }
+                unlockBodyScroll();
             }
         }
 
