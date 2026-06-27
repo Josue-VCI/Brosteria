@@ -3099,12 +3099,6 @@
             saveCartToStorage();
             renderProducts();
             updateCartFab();
-            
-            // Vibracion en celulares (Feedback haptico)
-            if (navigator.vibrate) {
-                navigator.vibrate(50);
-            }
-
             showToast(`Añadido: ${product.name}`, 'success');
         }
 
@@ -3128,10 +3122,6 @@
             // Si el modal esta abierto, re-renderizar la lista del modal
             if (document.getElementById('cart-modal-overlay').classList.contains('open')) {
                 renderCartList();
-            }
-
-            if (navigator.vibrate) {
-                navigator.vibrate(40);
             }
         }
 
@@ -3320,10 +3310,6 @@
             if (document.getElementById('cart-modal-overlay').classList.contains('open')) {
                 renderCartList();
             }
-
-            if (navigator.vibrate) {
-                navigator.vibrate(40);
-            }
         }
 
         // Remove completely from cart by index
@@ -3415,10 +3401,6 @@
             renderProducts();
             updateCartFab();
             closeProductDetailModal(null, true);
-
-            if (navigator.vibrate) {
-                navigator.vibrate(50);
-            }
         }
 
         // Product Detail Modal Logic
